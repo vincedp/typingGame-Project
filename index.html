@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing game</title>
+    <link rel="stylesheet" href="src/css/main.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <!-- Rules screen -->
+    <header class="screen show">
+      <h1>Welcome to the Typing game</h1>
+      <section class="rules">
+        <p><strong>Rules:</strong></p>
+        <p>Type in the input field the highlighted word.</p>
+        <p>The correct words will turn <span>green</span>.</p>
+        <p>Incorrect letters will turn <mark>red</mark>.</p>
+        <br />
+        <p>Have fun! 😀</p>
+      </section>
+      <button>Have fun</button>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+      <!-- Game screen-->
+      <section class="screen game hide">
+        <!-- Game -->
+        <section class="game-container">
+          <h2><strong>Type the text below</strong></h2>
+          <div class="progress-bar"></div>
+          <p></p>
+          <input type="text" />
+        </section>
+
+        <!-- User stats information-->
+        <section class="game-stats">
+          <p><strong>WPM:</strong><span class="score">0</span></p>
+          <p><strong>Time:</strong><span class="time">0</span>s</p>
+        </section>
+      </section>
+
+      <!-- Game conclusion screen-->
+      <section class="screen game-over hide">
+        <p>
+          <strong>Your WPM is <span class="score">0</span></strong>
+        </p>
+        <button>Play again</button>
+        <p>or</p>
+        <p>Share your score on <a href="https://twitter.com/">Twitter</a></p>
+      </section>
+    </main>
+    <script src="src/js/main.js"></script>
+  </body>
+</html>
