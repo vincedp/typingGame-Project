@@ -9,7 +9,7 @@
   <body>
     <!-- HEADER -->
     <!-- Rules screen -->
-    <header class="screen show">
+    <header class="screen header">
       <h1>Welcome to the Typing game</h1>
       <section class="rules">
         <p><strong>Rules:</strong></p>
@@ -19,7 +19,7 @@
         <br />
         <p>Have fun! 😀</p>
       </section>
-      <button>Have fun</button>
+      <button class="start-btn">Start game</button>
     </header>
 
     <!-- MAIN -->
@@ -29,9 +29,14 @@
         <!-- Game -->
         <section class="game-container">
           <h2><strong>Type the text below</strong></h2>
-          <div class="progress-bar"></div>
-          <p></p>
-          <input type="text" />
+          <progress class="progress-bar" max="100" value="20"></progress>
+          <p class="type-txt">
+            Outside of two men on a train platform there's nothing in sight.
+            They're waiting for spring to come, smoking down the track. The
+            world could come to an end tonight, but that's alright. She could
+            still be there sleeping when I get back.
+          </p>
+          <input class="txt-input" type="text" />
         </section>
 
         <!-- User stats information-->
@@ -43,12 +48,15 @@
 
       <!-- Game conclusion screen-->
       <section class="screen game-over hide">
-        <p>
+        <p class="text-1">
           <strong>Your WPM is <span class="score">0</span></strong>
         </p>
-        <button>Play again</button>
+        <button class="play-again-btn">Play again</button>
         <p>or</p>
-        <p>Share your score on <a href="https://twitter.com/">Twitter</a></p>
+        <p>
+          Share your score on
+          <a href="https://twitter.com/" target="_blank">Twitter</a>
+        </p>
       </section>
     </main>
     <script src="src/js/main.js"></script>
