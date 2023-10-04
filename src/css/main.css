@@ -139,13 +139,13 @@ main {
   position: relative;
 }
 main .game {
-  height: auto;
-  width: auto;
-  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: auto;
+  width: auto;
+  position: relative;
 }
 main .game-container {
   display: flex;
@@ -167,6 +167,7 @@ main .game-container .progress-bar {
   border-radius: 50px;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease;
 }
 main .game-container .progress-bar::-webkit-progress-value {
   background: rgba(0, 128, 0, 0.5);
@@ -182,6 +183,22 @@ main .game-container .type-txt {
   font-size: 1.2rem;
   line-height: 2;
   border: 2px solid rgba(0, 0, 0, 0.1);
+}
+main .game-container .type-txt .word {
+  display: inline-block;
+}
+main .game-container .type-txt .word.active {
+  text-decoration: underline;
+}
+main .game-container .type-txt .letter {
+  transition: color 0.5s ease-in;
+}
+main .game-container .type-txt .letter.correct-letter {
+  color: rgb(0, 186, 0);
+  font-weight: bold;
+}
+main .game-container .type-txt .letter.wrong-letter {
+  background-color: #f08080;
 }
 main .game-container input {
   width: 100%;
@@ -204,6 +221,7 @@ main .game-stats {
 main .game.hide {
   display: none;
   z-index: -100;
+  transform: scale(0);
 }
 main .game-over {
   display: flex;

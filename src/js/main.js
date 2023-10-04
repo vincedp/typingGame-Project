@@ -3,9 +3,25 @@
 const screens = document.querySelectorAll(".screen");
 const startBtn = document.querySelector(".start-btn");
 const playAgainBtn = document.querySelector(".play-again-btn");
-const typeTxt = document.querySelector(".type-txt");
+const textContainer = document.querySelector(".type-txt");
+const textInput = document.querySelector(".txt-input");
+const letterElement = document.querySelector(".type-txt").children;
 
-const paragraphs = [
+const STARTING_SCREEN = 0;
+const GAME_SCREEN = 1;
+const GAME_OVER_SCREEN = 2;
+
+let currentParagraph;
+let wordsArray = [];
+let textToTypeMarkup = "";
+let currentWordIndex = 0;
+let currentLetterIndex = 0;
+let currentText;
+// let userInput;
+let isExecuted = false;
+
+const paragraphsArray = [
+  `try project`,
   `It was hidden under the log beside the stream. It had been there for as long as Jerry had been alive. He wasn't sure if anyone besides him and his friends knew of its existence. He knew that anyone could potentially find it, but it was well enough hidden that it seemed unlikely to happen. The fact that it had been there for more than 30 years attested to this. So it was quite a surprise when he found the item was missing.`,
   `She was in a hurry. Not the standard hurry when you're in a rush to get someplace, but a frantic hurry. The type of hurry where a few seconds could mean life or death. She raced down the road ignoring speed limits and weaving between cars. She was only a few minutes away when traffic came to a dead standstill on the road ahead.`,
   `The red line moved across the page. With each millimeter it advanced forward, something changed in the room. The actual change taking place was difficult to perceive, but the change was real. The red line continued relentlessly across the page and the room would never be the same.`,
@@ -18,41 +34,210 @@ const paragraphs = [
   `There were only two ways to get out of this mess if they all worked together. The problem was that neither was all that appealing. One would likely cause everyone a huge amount of physical pain while the other would likely end up with everyone in jail. In Sam's mind, there was only one thing to do. He threw everyone else under the bus and he secretly sprinted away leaving the others to take the fall without him.`,
 ];
 
-let currentParagraph;
-
-// welcome screen to game screen
-startBtn.addEventListener("click", () => {
-  screens[0].classList.toggle("hide");
-  screens[1].classList.toggle("hide");
-  randomParagraph();
-});
-
-// game screen to game over screen
-typeTxt.addEventListener("click", () => {
-  screens[1].classList.toggle("hide");
-  screens[2].classList.toggle("hide");
-});
-
-// game over screen to game over screen
-playAgainBtn.addEventListener("click", () => {
-  screens[1].classList.toggle("hide");
-  screens[2].classList.toggle("hide");
-  randomParagraph();
-});
-
-const randomParagraph = () => {
-  currentParagraph = paragraphs[Math.floor(Math.random() * paragraphs.length)];
-  typeTxt.innerHTML = `${currentParagraph}`;
+const toggleScreens = (fromScreen, toScreen) => {
+  screens[fromScreen].classList.toggle("hide");
+  screens[toScreen].classList.toggle("hide");
 };
 
-// Generate random paragraph -- Done
-// How to track by underlining current word being typed
-// How to calculate for progress bar based on the length of the paragraph
-// space bar goes to next word
-// How to calculate for WPM
-// How to set time as soon as user enters an input
-// Display correct time format min:sec
-// How to calculate total time taken before the user finished the sentence
-// How to make text green as soon as user enters the same letter
-// How to highlight letter in red whenever user input and the current letter being type does not match
-// Async calculation of wpm while user types
+const generateRandomText = () =>
+  paragraphsArray[
+    Math.floor(Math.random() * paragraphsArray.length)
+  ].toLowerCase();
+
+const generateHTMLMarkUp = () => {
+  currentParagraph = generateRandomText();
+
+  wordsArray = [...currentParagraph.split(" ")];
+
+  currentText = wordsArray[currentWordIndex];
+
+  wordsArray.forEach((word) => {
+    textToTypeMarkup += `
+      <span class="word">
+        ${[...word]
+          .map((letter) => `<span class="letter">${letter}</span>`)
+          .join("")}
+      </span>`;
+  });
+
+  textContainer.innerHTML = textToTypeMarkup;
+  textContainer.children?.[currentWordIndex]?.classList.toggle("active");
+
+  textToTypeMarkup = "";
+};
+
+const toggleUnderlineWord = (wordIndex) =>
+  letterElement[wordIndex]?.classList.toggle("active");
+
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+
+const evaluateInput = () => {
+  // text input key down event
+
+  // textInput.addEventListener("input", (e) => {
+
+  //   word = e.target.value;
+  // });
+
+  textInput.addEventListener("keyup", (e) => {
+    // console.log(e.code);
+    // textInput.addEventListener("input", (e) => {
+    //   userInput = e.target.value;
+    // });
+    if (e.shiftKey) {
+      return false;
+    }
+
+    if (e.code === "Backspace") {
+      // prevent entry of empty string from user "space bar"
+      // return false;
+    }
+    if (e.code === "Space") {
+      // prevent entry of empty string from user "space bar"
+      e.preventDefault();
+    }
+    // ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    if (
+      // userInput[currentLetterIndex] === currentText[currentLetterIndex]
+      textInput.value[currentLetterIndex] === currentText[currentLetterIndex] &&
+      textInput.value[currentLetterIndex] != undefined &&
+      currentText[currentLetterIndex] != undefined
+    ) {
+      isExecuted = true;
+      console.log(
+        textInput.value[currentLetterIndex],
+        currentText[currentLetterIndex]
+      );
+      console.log(currentText);
+
+      textContainer.children[currentWordIndex]
+        .querySelectorAll(".letter")
+        [currentLetterIndex]?.classList.add("correct-letter");
+
+      ++currentLetterIndex;
+      console.log(currentLetterIndex);
+      console.log("inserted css class");
+    } else {
+      console.log(
+        textInput.value[currentLetterIndex],
+        currentText[currentLetterIndex]
+      );
+      console.log(currentText);
+
+      // textContainer.children[currentWordIndex]
+      //   .querySelectorAll(".letter")
+      //   [currentLetterIndex]?.classList.add("wrong-letter");
+
+      ++currentLetterIndex;
+      console.log(currentLetterIndex);
+      console.log("failed to insert css class");
+    }
+
+    // -------------------------------------
+
+    // need to change this condition
+    // if (
+    //   textInput.value[currentLetterIndex] !== currentText[currentLetterIndex] &&
+    //   !isExecuted
+    // ) {
+    //   console.log(
+    //     textInput.value[currentLetterIndex],
+    //     currentText[currentLetterIndex]
+    //   );
+    //   console.log(currentText);
+
+    //   // textContainer.children[currentWordIndex]
+    //   //   .querySelectorAll(".letter")
+    //   //   [currentLetterIndex]?.classList.add("wrong-letter");
+
+    //   ++currentLetterIndex;
+    //   console.log(currentLetterIndex);
+    //   console.log("failed to insert css class");
+    // }
+    // -------------------------------------
+
+    if (e.code === "Backspace") {
+      if (currentLetterIndex >= 1) --currentLetterIndex;
+
+      // isExecuted = false;
+      // textContainer.children[currentWordIndex]
+      //   .querySelectorAll(".letter")
+      //   [currentLetterIndex]?.classList.remove("wrong-letter");
+
+      textContainer.children[currentWordIndex]
+        .querySelectorAll(".letter")
+        [currentLetterIndex]?.classList.remove("correct-letter");
+      console.log("backspace");
+      console.log(currentLetterIndex);
+    }
+    // ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    // user input and current text matches
+    if (currentText === textInput.value.trim() && e.code === "Space") {
+      // remove current underline
+      toggleUnderlineWord(currentWordIndex);
+
+      ++currentWordIndex;
+
+      // add underline to current text
+      toggleUnderlineWord(currentWordIndex);
+
+      // user finish text
+      if (currentText === wordsArray[wordsArray.length - 1]) {
+        // display game over screen
+        toggleScreens(GAME_SCREEN, GAME_OVER_SCREEN);
+
+        // reset index to zero to play again
+        currentWordIndex = 0;
+      }
+
+      // next text
+      currentText = wordsArray[currentWordIndex];
+      currentLetterIndex = 0;
+      // empty text input for every  word
+      textInput.value = "";
+    }
+  });
+};
+
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
+
+// TODO
+const startGame = () => {
+  toggleScreens(STARTING_SCREEN, GAME_SCREEN);
+  textInput.focus();
+  generateHTMLMarkUp();
+  evaluateInput();
+};
+
+// TODO
+const game = () => {
+  toggleScreens(GAME_SCREEN, GAME_OVER_SCREEN);
+};
+
+// TODO
+const gameOver = () => {
+  toggleScreens(GAME_OVER_SCREEN, GAME_SCREEN);
+
+  generateHTMLMarkUp();
+};
+
+// welcome screen to game screen
+startBtn.addEventListener("click", startGame);
+
+// game screen to game over screen
+// textContainer.addEventListener("click", game);
+
+// game over screen to game over screen
+playAgainBtn.addEventListener("click", gameOver);
