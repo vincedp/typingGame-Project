@@ -176,6 +176,7 @@ main .game-container .progress-bar::-webkit-progress-bar {
   background: transparent;
 }
 main .game-container .type-txt {
+  width: 100%;
   text-align: justify;
   padding: 10px;
   letter-spacing: 1px;
