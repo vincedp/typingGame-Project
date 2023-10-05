@@ -1,1 +1,1 @@
-Typing game, improve your wpm by using this app
+Typing game, improve your WPM by using this app
